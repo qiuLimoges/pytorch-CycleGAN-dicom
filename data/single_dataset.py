@@ -1,6 +1,7 @@
 from data.base_dataset import BaseDataset, get_transform
-from data.image_folder import make_dataset
+from data.image_folder import make_dataset,is_dicom_file
 from PIL import Image
+import pydicom
 
 
 class SingleDataset(BaseDataset):
@@ -31,7 +32,17 @@ class SingleDataset(BaseDataset):
             A_paths(str) - - the path of the image
         """
         A_path = self.A_paths[index]
-        A_img = Image.open(A_path).convert('RGB')
+        
+        '''
+        ajouter le code pour lecture dicom
+        '''
+        
+        if is_dicom_file(A_path):
+            ds=pydicom.dcmread(A_path)
+            A_img=Image.fromarray(ds.pixel_array).convert('I')
+        else:            
+            A_img = Image.open(A_path).convert('RGB')
+        
         A = self.transform(A_img)
         return {'A': A, 'A_paths': A_path}
 

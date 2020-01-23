@@ -1,8 +1,9 @@
 import os.path
 from data.base_dataset import BaseDataset, get_transform
-from data.image_folder import make_dataset
+from data.image_folder import make_dataset, is_dicom_file
 from PIL import Image
 import random
+import pydicom
 
 
 class UnalignedDataset(BaseDataset):
@@ -54,8 +55,29 @@ class UnalignedDataset(BaseDataset):
         else:   # randomize the index for domain B to avoid fixed pairs.
             index_B = random.randint(0, self.B_size - 1)
         B_path = self.B_paths[index_B]
-        A_img = Image.open(A_path).convert('RGB')
-        B_img = Image.open(B_path).convert('RGB')
+        
+        '''Qh: ajouter code pour dicom
+        '''
+        
+        if is_dicom_file(A_path):
+            dsA=pydicom.dcmread(A_path)
+            A_img=Image.fromarray(dsA.pixel_array).convert('I')
+            #array_buffer=dsA.pixel_array.tobytes()
+            #A_img=Image.new("I",dsA.Pixel_array.T.shape)
+            #A_img=A_img.frombytes(array_buffer,'raw',"I;16")
+        else:            
+            A_img = Image.open(A_path).convert('RGB')
+        
+        if is_dicom_file(B_path):
+            dsB=pydicom.dcmread(B_path)
+            B_img=Image.fromarray(dsB.pixel_array).convert('I')
+            #array_bufferB=dsB.pixel_array.tobytes()
+            #B_img=Image.new("I",dsA.Pixel_array.T.shape)
+            #B_img=B_img.frombytes(array_bufferB,'raw',"I;16")
+        else:            
+            B_img = Image.open(B_path).convert('RGB')
+        
+        
         # apply image transformation
         A = self.transform_A(A_img)
         B = self.transform_B(B_img)

@@ -9,6 +9,10 @@ import torch.utils.data as data
 from PIL import Image
 import os
 import os.path
+import pydicom
+import skimage
+import numpy as np
+
 
 IMG_EXTENSIONS = [
     '.jpg', '.JPG', '.jpeg', '.JPEG',
@@ -20,6 +24,16 @@ IMG_EXTENSIONS = [
 def is_image_file(filename):
     return any(filename.endswith(extension) for extension in IMG_EXTENSIONS)
 
+def is_dicom_file(filename):
+    return any(filename.endswith(extension) for extension in "dcm")
+
+
+'''
+qh: ajouter ici if_dicom_file
+def is_dicom_file(filename):
+    return any(filename.endswith(extension) for extension in "dcm")
+'''
+
 
 def make_dataset(dir, max_dataset_size=float("inf")):
     images = []
@@ -27,15 +41,42 @@ def make_dataset(dir, max_dataset_size=float("inf")):
 
     for root, _, fnames in sorted(os.walk(dir)):
         for fname in fnames:
-            if is_image_file(fname):
+            if is_image_file(fname) or is_dicom_file(fname):
                 path = os.path.join(root, fname)
                 images.append(path)
     return images[:min(max_dataset_size, len(images))]
+'''
+ 14 Janvier 2020 QH: on peut changer ici pour ajouter le code à lire image DICOM
+ for ex; 
+     def dicom_loader(path)::
+         return pydicom.open(path).convert('gray')
+         
+attention: PIL.Image.open return an Image Objet, but not Np array
+penser à injecter pixel data de pydicom à PIL image objet, puis donner à CNN
 
+OK: images[] peut returner les fichers en dcm.
+         
+
+'''
+def dicomImageOpen(path):
+    ds=pydicom.dcmread(path)
+    return Image.fromarray(ds.pixel_array).convert('I')
+    
+    '''array_buffer=ds.pixel_array.tobytes()
+    imgA=Image.new("I",ds.Pixel_array.T.shape)
+    return imgA.frombytes(array_buffer,'raw',"I;16")
+       #32-bit signed integer pixels conversion
+    '''
+       
+    
+    
 
 def default_loader(path):
-    return Image.open(path).convert('RGB')
-
+    if is_dicom_file(path):
+        return dicomImageOpen(path) # ajouter ici le code pour lire dicom file
+    else:
+        return Image.open(path).convert('RGB')
+#
 
 class ImageFolder(data.Dataset):
 
