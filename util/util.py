@@ -41,7 +41,7 @@ def tensor2dicom(input_image,imtype=np.uint16):
             return input_image
         image_numpy = image_tensor[0].cpu().float().numpy()  # convert it into a numpy array
         
-        image_numpy = (image_numpy + 1) / 2.0 * 65536.0  # post-processing: tranpose and scaling
+        image_numpy = (image_numpy + 1) / 2.0 * 5000.0-2000.0  # post-processing: tranpose and scaling
         
         np.save("dicomNP.npy",image_numpy)
     else:  # if it is a numpy array, do nothing
