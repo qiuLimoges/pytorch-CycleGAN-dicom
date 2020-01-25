@@ -60,6 +60,7 @@ OK: images[] peut returner les fichers en dcm.
 '''
 def dicomImageOpen(path):
     ds=pydicom.dcmread(path)
+    ds.pixel_array=ds.pixel_array+2000 #transforme CT Hu de -2000~+3000 à 0 ~ 5000
     return Image.fromarray(ds.pixel_array).convert('I')
     
     '''array_buffer=ds.pixel_array.tobytes()
