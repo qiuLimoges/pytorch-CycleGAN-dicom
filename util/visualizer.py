@@ -5,6 +5,12 @@ import ntpath
 import time
 from . import util, html
 from subprocess import Popen, PIPE
+'''
+QH : ajout les codes pour ecrire dicom file
+ajout: is_dicom_file, pydicom, def save_dicom_file
+'''
+
+
 
 
 if sys.version_info[0] == 2:
@@ -36,13 +42,25 @@ def save_images(webpage, visuals, image_path, aspect_ratio=1.0, width=256):
         im = util.tensor2im(im_data)
         image_name = '%s_%s.png' % (name, label)
         save_path = os.path.join(image_dir, image_name)
-        util.save_image(im, save_path, aspect_ratio=aspect_ratio)
+        util.save_image(im, save_path, aspect_ratio=aspect_ratio)       
         ims.append(image_name)
         txts.append(label)
         links.append(image_name)
     webpage.add_images(ims, txts, links, width=width)
 
-
+def save_dicom_images(webpage,visuals, image_path):
+    """sauvegarde dans dicom file , les mettres dans le meme dossier
+    """
+    image_dir = webpage.get_image_dir()
+    short_path = ntpath.basename(image_path[0])
+    name = os.path.splitext(short_path)[0]
+    for label, im_data in visuals.items():
+        im=util.tensor2dicom(im_data)
+        image_name='%s_%s.dcm' % (name,label)
+        save_path=os.path.join(image_dir,image_name)
+        util.save_dicom_image(im,save_path)
+    
+    
 class Visualizer():
     """This class includes several functions that can display/save images and print/save logging information.
 
