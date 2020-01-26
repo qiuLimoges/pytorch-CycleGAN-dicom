@@ -62,6 +62,7 @@ def dicomImageOpen(path):
     ds=pydicom.dcmread(path)
     ds.pixel_array=ds.pixel_array+2000 #transforme CT Hu de -2000~+3000 à 0 ~ 5000
     np.save("avantEntreGan.npy",ds.pixel_array)
+
     return Image.fromarray(ds.pixel_array).convert('I')
     
     '''array_buffer=ds.pixel_array.tobytes()
