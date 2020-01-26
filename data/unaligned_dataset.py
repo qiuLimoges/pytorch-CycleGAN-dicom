@@ -57,23 +57,29 @@ class UnalignedDataset(BaseDataset):
         B_path = self.B_paths[index_B]
         
         '''Qh: ajouter code pour dicom
+            for new: can use Image.fromarray(ds.pixel_array).convert("I") to import, but the voxel value is not correct
         '''
         
         if is_dicom_file(A_path):
             dsA=pydicom.dcmread(A_path)
-            A_img=Image.fromarray(dsA.pixel_array).convert('I')
-            #array_buffer=dsA.pixel_array.tobytes()
-            #A_img=Image.new("I",dsA.Pixel_array.T.shape)
-            #A_img=A_img.frombytes(array_buffer,'raw',"I;16")
+           # dsA.pixel_array=dsA.pixel_array +2000
+           
+            array_buffer=dsA.pixel_array.tobytes()
+            #A_img=Image.new("F",dsA.Pixel_array.shape)
+            A_img=Image.frombytes("F",dsA.pixel_array.shape,array_buffer,'raw',"F;16")
+            #help: PIL doc: writing your own image plugin
+            
         else:            
             A_img = Image.open(A_path).convert('RGB')
         
         if is_dicom_file(B_path):
             dsB=pydicom.dcmread(B_path)
-            B_img=Image.fromarray(dsB.pixel_array).convert('I')
-            #array_bufferB=dsB.pixel_array.tobytes()
-            #B_img=Image.new("I",dsA.Pixel_array.T.shape)
-            #B_img=B_img.frombytes(array_bufferB,'raw',"I;16")
+            #dsB.pixel_array=dsB.pixel_array +2000
+            
+            array_buffer=dsB.pixel_array.tobytes()
+            #B_img=Image.new("F",dsB.Pixel_array.shape)
+            B_img=Image.frombytes("F",dsB.pixel_array.shape,array_buffer,'raw',"F;16")
+           
         else:            
             B_img = Image.open(B_path).convert('RGB')
         
