@@ -1,4 +1,5 @@
-文件采用Stackedit IO网站生成
+文件采用Stackedit IO网站生成 ([stackedit.io/app#](https//stackedit.io))
+
 神经网络CycleGAN对医学图像格式文件DICOM的操作
 2019年最新的研究文章显示了使用cycleGAN对dicom文件进行操作的可能性。
 
@@ -9,5 +10,5 @@
 2020年1月24日：主要是应用Pydicom组件进行Dicom图像的读取，然后以Numpy Array的形式赋给PIL.Image对象，注意要将图像转换成“I”格式也就是32位图像。由于源代码主要是处理彩色RGB8位图像，而Dicom图像是16位的灰度图，所以在改编时遇到了不少的困难。最后找到的技术路径是将16位的dicom图转换为32位的PIL.Image对象输入程序。程序内部在输入神经网络前实际上将其转换成0到1的浮点数。在输出端将其转换成16位的整型二维数列（实际是RGB的三维数列，不过只需读取0，X，Y两维），封装成NumpyArray就可以重新写入Dicom文件。代码目前还没有对Dicom文件进行全面写入，主要是标记部分没有转入。
 2020年1月25日：完成Gighub的同步操作。总算可以一次修改代码，到处备份。不过应用ct2IRM产生的处理文件，仍旧不能有效的生成可读的DIcom文件。怀疑主要问题还是Dicom数据转换，因为在经过神经网络处理后出来的文件，像素最大值接近6万。很显然是转换数据时出了问题。另外，不知道是不是需要将DIcom原始数据转换成HU值然后在输入网络。感觉似乎是不需要这样做的。
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTI4OTQ2OTAzXX0=
+eyJoaXN0b3J5IjpbOTU4NjE1MTQzXX0=
 -->
