@@ -12,6 +12,5 @@
 
 2020年1月26日：数据转入神经网络的关键是在./datat/base_dataset.py中的BaseDataset类。在Get_transform的函数中使用了Torchvision.transform函数进行数据的预处理和归一化Normalisation。需要找到一个可靠的方法在神经网络的出口处将数据转换成dicom图像需要的格式。
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTM5NzkwMzYyMywtMjAxNjg5NzM4NCwxOT
-M0MjgxOTQxXX0=
+eyJoaXN0b3J5IjpbMTM5NzkwMzYyM119
 -->
