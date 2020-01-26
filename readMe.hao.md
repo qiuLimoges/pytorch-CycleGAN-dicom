@@ -10,8 +10,8 @@
 
 2020年1月25日：完成Gighub的同步操作。总算可以一次修改代码，到处备份。不过应用ct2IRM产生的处理文件，仍旧不能有效的生成可读的DIcom文件。怀疑主要问题还是Dicom数据转换，因为在经过神经网络处理后出来的文件，像素最大值接近6万。很显然是转换数据时出了问题。另外，不知道是不是需要将DIcom原始数据转换成HU值然后在输入网络。感觉似乎是不需要这样做的。
 
-2020年1月26日：数据转入神经网络的关键是在./datat/base_dataset.py中的BaseDataset类。在
+2020年1月26日：数据转入神经网络的关键是在./datat/base_dataset.py中的BaseDataset类。在Get_transform的函数中使用了Torchvision.transform函数进行数据的预处理和归一化Normalisation。需要找到一个可靠的方法在神经网络的出口处将数据
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTU1OTEyMDM1NywtMjAxNjg5NzM4NCwxOT
-M0MjgxOTQxXX0=
+eyJoaXN0b3J5IjpbMjUxNjE2MDcwLC0yMDE2ODk3Mzg0LDE5Mz
+QyODE5NDFdfQ==
 -->
