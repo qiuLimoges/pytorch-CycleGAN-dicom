@@ -9,6 +9,11 @@
 2020年1月24日：主要是应用Pydicom组件进行Dicom图像的读取，然后以Numpy Array的形式赋给PIL.Image对象，注意要将图像转换成“I”格式也就是32位图像。由于源代码主要是处理彩色RGB8位图像，而Dicom图像是16位的灰度图，所以在改编时遇到了不少的困难。最后找到的技术路径是将16位的dicom图转换为32位的PIL.Image对象输入程序。程序内部在输入神经网络前实际上将其转换成0到1的浮点数。在输出端将其转换成16位的整型二维数列（实际是RGB的三维数列，不过只需读取0，X，Y两维），封装成NumpyArray就可以重新写入Dicom文件。代码目前还没有对Dicom文件进行全面写入，主要是标记部分没有转入。
 
 2020年1月25日：完成Gighub的同步操作。总算可以一次修改代码，到处备份。不过应用ct2IRM产生的处理文件，仍旧不能有效的生成可读的DIcom文件。怀疑主要问题还是Dicom数据转换，因为在经过神经网络处理后出来的文件，像素最大值接近6万。很显然是转换数据时出了问题。另外，不知道是不是需要将DIcom原始数据转换成HU值然后在输入网络。感觉似乎是不需要这样做的。
+
+2020年1月26日：数据转入神经网络的关键是在./datat/base_dataset.py中的BaseDataset类。在Get_transform的函数中使用了Torchvision.transform函数进行数据的预处理和归一化Normalisation。需要找到一个可靠的方法在神经网络的出口处将数据转换成dicom图像需要的格式。坏消息是Transforms.ToTensor好像只支持将八位数据转换成0-1的浮点数，对于其他类型，返还元数据不予处理。看来则需要我在转入之前就要先将数据手工转换好。否则不会成功。具体详情可以参考 torchvision.transforms.totensor的说明。
+
+2020.01.27 Effet SimpleITK semble bien pour decoder dicom image. existe un code example pour ecrire sous forme Dicom: https://itk.org/SimpleITKDoxygen/html/DicomSeriesReadModifyWrite_2DicomSeriesReadModifySeriesWrite_8py-example.html
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIwMTY4OTczODQsMTkzNDI4MTk0MV19
+eyJoaXN0b3J5IjpbMTY4MTA3MTk3Nyw5NjcwODUwOTgsMTM5Nz
+kwMzYyM119
 -->
