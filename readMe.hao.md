@@ -12,8 +12,8 @@
 
 2020年1月26日：数据转入神经网络的关键是在./datat/base_dataset.py中的BaseDataset类。在Get_transform的函数中使用了Torchvision.transform函数进行数据的预处理和归一化Normalisation。需要找到一个可靠的方法在神经网络的出口处将数据转换成dicom图像需要的格式。坏消息是Transforms.ToTensor好像只支持将八位数据转换成0-1的浮点数，对于其他类型，返还元数据不予处理。看来则需要我在转入之前就要先将数据手工转换好。否则不会成功。具体详情可以参考 torchvision.transforms.totensor的说明。
 
-2020.01.27 Effet SimpleITK semble bien pour decoder dicom image. existe un code example pour ecrire sous forme Dicom: 
+2020.01.27 Effet SimpleITK semble bien pour decoder dicom image. existe un code example pour ecrire sous forme Dicom: https://itk.org/SimpleITKDoxygen/html/DicomSeriesReadModifyWrite_2DicomSeriesReadModifySeriesWrite_8py-example.html
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTkxOTk3NTY4OCw5NjcwODUwOTgsMTM5Nz
+eyJoaXN0b3J5IjpbMTY4MTA3MTk3Nyw5NjcwODUwOTgsMTM5Nz
 kwMzYyM119
 -->
