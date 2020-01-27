@@ -13,6 +13,7 @@ def tensor2im(input_image, imtype=np.uint8):
     Parameters:
         input_image (tensor) --  the input image tensor array
         imtype (type)        --  the desired type of the converted numpy array
+        ttt
     """
     if not isinstance(input_image, np.ndarray):
         if isinstance(input_image, torch.Tensor):  # get the data from a variable

@@ -4,6 +4,7 @@ from data.image_folder import make_dataset, is_dicom_file
 from PIL import Image
 import random
 import pydicom
+import numpy as np
 
 
 class UnalignedDataset(BaseDataset):
@@ -57,28 +58,20 @@ class UnalignedDataset(BaseDataset):
         B_path = self.B_paths[index_B]
         
         '''Qh: ajouter code pour dicom
-            for new: can use Image.fromarray(ds.pixel_array).convert("I") to import, but the voxel value is not correct
         '''
         
         if is_dicom_file(A_path):
-            dsA=pydicom.dcmread(A_path)
-           # dsA.pixel_array=dsA.pixel_array +2000
-           
-            array_buffer=dsA.pixel_array.tobytes()
-            #A_img=Image.new("F",dsA.Pixel_array.shape)
-            A_img=Image.frombytes("F",dsA.pixel_array.shape,array_buffer,'raw',"F;16")
-            #help: PIL doc: writing your own image plugin
-            
+            dsA=pydicom.dcmread(A_path)             
+            A_img=np.array(dsA.pixel_array,dtype=np.float64) #en fait, toTensor accepter directement Numpy Array
+            A_img=(A_img+1000.)/5000.            
+          
         else:            
             A_img = Image.open(A_path).convert('RGB')
         
         if is_dicom_file(B_path):
             dsB=pydicom.dcmread(B_path)
-            #dsB.pixel_array=dsB.pixel_array +2000
-            
-            array_buffer=dsB.pixel_array.tobytes()
-            #B_img=Image.new("F",dsB.Pixel_array.shape)
-            B_img=Image.frombytes("F",dsB.pixel_array.shape,array_buffer,'raw',"F;16")
+            B_img=np.array(dsB.pixel_array,dtype=np.float64)
+            B_img=(B_img+1000.)/5000.
            
         else:            
             B_img = Image.open(B_path).convert('RGB')
