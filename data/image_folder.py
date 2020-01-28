@@ -63,7 +63,11 @@ def dicomImageOpen(path):
     ds.pixel_array=ds.pixel_array+2000 #transforme CT Hu de -2000~+3000 à 0 ~ 5000
     np.save("avantEntreGan.npy",ds.pixel_array)
 
-    return Image.fromarray(ds.pixel_array).convert('I')
+    img_np=np.array(ds.pixel_array,dtype=np.float32) #en fait, toTensor accepter directement Numpy Array
+    img_np=(img_np+1000.0)/5000.0           
+    img_buffer=img_np.tobytes()
+    img=Image.frombytes("F",ds.pixel_array.shape,img_buffer,'raw',"F")
+    return img
     
     '''array_buffer=ds.pixel_array.tobytes()
     imgA=Image.new("I",ds.Pixel_array.T.shape)

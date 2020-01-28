@@ -62,16 +62,21 @@ class UnalignedDataset(BaseDataset):
         
         if is_dicom_file(A_path):
             dsA=pydicom.dcmread(A_path)             
-            A_img=np.array(dsA.pixel_array,dtype=np.float64) #en fait, toTensor accepter directement Numpy Array
-            A_img=(A_img+1000.)/5000.            
+            A_img_np=np.array(dsA.pixel_array,dtype=np.float32) #en fait, toTensor accepter directement Numpy Array
+            A_img_np=(A_img_np+1000.0)/5000.0           
+            A_img_buffer=A_img_np.tobytes()
+            A_img=Image.frombytes("F",dsA.pixel_array.shape,A_img_buffer,'raw',"F")
+            
           
         else:            
             A_img = Image.open(A_path).convert('RGB')
         
         if is_dicom_file(B_path):
             dsB=pydicom.dcmread(B_path)
-            B_img=np.array(dsB.pixel_array,dtype=np.float64)
-            B_img=(B_img+1000.)/5000.
+            B_img_np=np.array(dsB.pixel_array,dtype=np.float32) #en fait, toTensor accepter directement Numpy Array
+            B_img_np=(B_img_np+1000.0)/5000.0           
+            B_img_buffer=B_img_np.tobytes()
+            B_img=Image.frombytes("F",dsB.pixel_array.shape,B_img_buffer,'raw',"F")
            
         else:            
             B_img = Image.open(B_path).convert('RGB')
