@@ -15,8 +15,8 @@
 2020.01.27 Effet SimpleITK semble bien pour decoder dicom image. existe un code example pour ecrire sous forme Dicom: https://itk.org/SimpleITKDoxygen/html/DicomSeriesReadModifyWrite_2DicomSeriesReadModifySeriesWrite_8py-example.html
 
 2020.01.30: # Deep Learning: A Review for the Radiation Oncologist:https://www.frontiersin.org/articles/10.3389/fonc.2019.00977/full
-propablement je vais changer le direction vers le contourage automatique puisqu'il s'agit d'un seule CNN
+propablement je vais changer le direction vers le contourage automatique puisqu'il s'agit d'un seule CNN, plus vite et mature dans le domain medicale. 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTI3NDczNTY0OCwxNjgxMDcxOTc3LDk2Nz
+eyJoaXN0b3J5IjpbLTQ0NjEzMTU0MCwxNjgxMDcxOTc3LDk2Nz
 A4NTA5OCwxMzk3OTAzNjIzXX0=
 -->
